@@ -3,14 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangerEventManager.WebApi", "RangerEventManager.WebApi\RangerEventManager.WebApi.csproj", "{A4574CC3-20FD-45DF-9BD3-C4974F99CCE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RangerEventManager.WebApi", "RangerEventManager.WebApi\RangerEventManager.WebApi.csproj", "{A4574CC3-20FD-45DF-9BD3-C4974F99CCE3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA} = {51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangerEventManager.Persistence", "RangerEventManager.Persistence\RangerEventManager.Persistence.csproj", "{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RangerEventManager.Persistence", "RangerEventManager.Persistence\RangerEventManager.Persistence.csproj", "{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AA12F499-9A44-486C-9835-BBB38EF0C57A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{93F49731-7E69-415A-94A5-0F68559456A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93F49731-7E69-415A-94A5-0F68559456A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93F49731-7E69-415A-94A5-0F68559456A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93F49731-7E69-415A-94A5-0F68559456A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93F49731-7E69-415A-94A5-0F68559456A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

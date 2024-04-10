@@ -1,9 +1,8 @@
-﻿namespace RangerEventManager.WebApi.Settings
-{
-    public class JwtSettings
-    {
-        public string Issuer { get; set; }
-        public string Audience { get; set; }
-        public string Secret { get; set; }
-    }
-}
+﻿namespace RangerEventManager.WebApi.Settings;
+
+ public record class JwtSettings(
+    string Issuer,
+    string Audience,
+    string SigningKey,
+    int ExpirationSeconds
+);

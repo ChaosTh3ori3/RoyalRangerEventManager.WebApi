@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RangerEventManager.Persistence.Entities.Camp;
 using RangerEventManager.WebApi.Repositories.Camps;
@@ -7,7 +8,6 @@ namespace RangerEventManager.WebApi.Controller
 {
     [ApiController]
     [Route("camps")]
-    [Authorize]
     public class CampsController : ControllerBase
     {
         private readonly ICampsRepository campsRepository;
@@ -18,6 +18,7 @@ namespace RangerEventManager.WebApi.Controller
         }
 
         [HttpGet]
+        [EnableCors("default")]
         public async Task<IActionResult> GetAllCamps()
         {
             var camps = await campsRepository.GetAll();
@@ -26,6 +27,7 @@ namespace RangerEventManager.WebApi.Controller
         }
 
         [HttpPut]
+        [EnableCors("default")]
         public async Task<IActionResult> AddNewCamp()
         {
             var camp = new CampEntity

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RangerEventManager.WebApi.Repositories.Camps;
@@ -22,32 +21,37 @@ public static class ApplicationBuilder
             .WriteTo.Console());
 
         // authentication
-        var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
-        var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
+        var jwtOptions = builder.Configuration
+            .GetSection("JwtSettings")
+            .Get<JwtSettings>();
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+        builder.Services.AddSingleton(jwtOptions);
 
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-         {
-             options.TokenValidationParameters.ValidIssuer = jwtIssuer; 
-             options.TokenValidationParameters.ValidateIssuer = true;
-             options.TokenValidationParameters.ValidateIssuerSigningKey = true;
-             options.TokenValidationParameters.IssuerSigningKey = key;
-             options.TokenValidationParameters.ValidateLifetime = false;
-             options.TokenValidationParameters.ValidateAudience = true;
-             options.TokenValidationParameters.ValidAudience = "realm-management";
-         });
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(options =>
+              {
+                  options.Authority = jwtOptions.Issuer;
+                  options.Audience = "account";
+                  options.RequireHttpsMetadata = false;
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateIssuer = false,
+                      ValidateAudience = false,
+                      ValidateLifetime = false,
+                      ValidateIssuerSigningKey = false,
+                      ValidIssuer = jwtOptions.Issuer,
+                      ValidAudience = "WebApi",
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Q0uDCeAHiPMwFdRCBHktn27YYxhU2Id1"))
+                  };
+              });
+
+        builder.Services.AddAuthorization();
 
         // repositories
         builder.Services.AddSingleton<ICampsRepository, CampsRepository>();
 
         builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddSwaggerGen(opt =>
         {
@@ -63,27 +67,27 @@ public static class ApplicationBuilder
             });
 
             opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type=ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                    new string[]{}
                 }
-            },
-            new string[]{}
-        }
-    });
+            });
         });
-
 
         return builder;
     }
 
     public static WebApplication BuilderWebApplication(this WebApplication app)
     {
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -94,19 +98,21 @@ public static class ApplicationBuilder
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
-
-            IdentityModelEventSource.ShowPII = true;
-
         }
 
         app.UseSerilogRequestLogging();
-        app.UseStaticFiles();
 
         app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseHttpsRedirection();
+
+        app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
         app.MapControllers();
 
