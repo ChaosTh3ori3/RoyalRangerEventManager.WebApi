@@ -13,7 +13,7 @@ namespace RangerEventManager.Persistence.Entities.Camp
         public string? Name { get; set; }
         public DateTime StatDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<PersonEntity>? Members { get; set; }
-        public List<PersonEntity>? Leaders { get; set; }
+        public List<string>? MemberUserNames { get; set; }
+        public List<string>? LeaderUserNames { get; set; }
     }
 }

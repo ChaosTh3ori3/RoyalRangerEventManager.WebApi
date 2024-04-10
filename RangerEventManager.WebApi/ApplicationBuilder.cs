@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RangerEventManager.WebApi.Repositories.Camps;
+using RangerEventManager.WebApi.Service.UserService;
 using RangerEventManager.WebApi.Settings;
 using Serilog;
 using System.Text;
@@ -13,42 +15,40 @@ public static class ApplicationBuilder
     public static WebApplicationBuilder BuildServices(this WebApplicationBuilder builder)
     {
         // settings
-        builder.Services.Configure<MongoDbSettings>(
-            builder.Configuration.GetSection("MongoDbSettings"));
+        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection(nameof(MongoDbSettings)));
 
         // logging
         builder.Host.UseSerilog((ctx, lc) => lc
             .WriteTo.Console());
 
         // authentication
-        var jwtOptions = builder.Configuration
-            .GetSection("JwtSettings")
-            .Get<JwtSettings>();
+        var jwtOptions = builder.Configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
-        builder.Services.AddSingleton(jwtOptions);
-
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddAuthorization();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
               {
                   options.Authority = jwtOptions.Issuer;
-                  options.Audience = "account";
+                  options.Audience = jwtOptions.Audience;
                   options.RequireHttpsMetadata = false;
                   options.TokenValidationParameters = new TokenValidationParameters
                   {
-                      ValidateIssuer = false,
-                      ValidateAudience = false,
+                      ValidateIssuer = true,
+                      ValidateAudience = true,
                       ValidateLifetime = false,
-                      ValidateIssuerSigningKey = false,
+                      ValidateIssuerSigningKey = true,
                       ValidIssuer = jwtOptions.Issuer,
-                      ValidAudience = "WebApi",
-                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Q0uDCeAHiPMwFdRCBHktn27YYxhU2Id1"))
+                      ValidAudience = jwtOptions.Audience,
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
                   };
               });
 
-        builder.Services.AddAuthorization();
-
         // repositories
         builder.Services.AddSingleton<ICampsRepository, CampsRepository>();
+
+        // services
+        builder.Services.AddTransient<IUserService, UserService>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -99,7 +99,7 @@ public static class ApplicationBuilder
                 options.RoutePrefix = string.Empty;
             });
         }
-
+        
         app.UseSerilogRequestLogging();
 
         app.UseRouting();
