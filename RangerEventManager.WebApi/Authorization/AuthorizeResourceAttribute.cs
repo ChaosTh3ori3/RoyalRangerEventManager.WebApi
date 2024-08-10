@@ -2,12 +2,12 @@
 
 namespace RangerEventManager.WebApi.Authorization
 {
-    public class AuthorizeAttribute : TypeFilterAttribute
+    public class AuthorizeResourceAttribute : TypeFilterAttribute
     {
-        public AuthorizeAttribute(PermissionItems item)
+        public AuthorizeResourceAttribute(PermissionItems item)
         : base(typeof(AuthorizeActionFilter))
         {
-            Arguments = new object[] { item };
+            Arguments = [item];
         }
     }
 }

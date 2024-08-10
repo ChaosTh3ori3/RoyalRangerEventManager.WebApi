@@ -1,14 +1,10 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using RangerEventManager.Persistence.Entities.Camp;
 using RangerEventManager.Persistence.Enums;
 
-namespace RangerEventManager.Persistence.Entities.Camp
+namespace RangerEventManager.Persistence.Dtos.Camp
 {
-    public class CampEntity
+    public class ReadCampDto
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
         public long Number { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -29,5 +25,6 @@ namespace RangerEventManager.Persistence.Entities.Camp
         public DateTime PostCampEndDate { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime LastChangeDate { get; set; }
+
     }
 }

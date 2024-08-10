@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RangerEventManager.Persistence.Entities.Camp;
+using RangerEventManager.WebApi.Domain.Base;
+using RangerEventManager.WebApi.Domain.Camps.Operation;
 using RangerEventManager.WebApi.Repositories.Camps;
-using RangerEventManager.WebApi.Service.UserService;
+using RangerEventManager.WebApi.Services.UserService;
 using RangerEventManager.WebApi.Settings;
 using Serilog;
 using System.Text;
@@ -48,6 +51,10 @@ public static class ApplicationBuilder
 
         // services
         builder.Services.AddTransient<IUserService, UserService>();
+
+        // domain
+        builder.Services.AddTransient<IOperationHandler<CampEntity, CreateCampOperation>, CreateCampOperationHandler>();
+        builder.Services.AddTransient<IOperationHandler<CampEntity, AssingEmplyeOperation>, AssingEmplyeOperationHandler>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

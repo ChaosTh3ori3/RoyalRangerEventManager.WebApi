@@ -1,4 +1,4 @@
-﻿namespace RangerEventManager.WebApi.Service.UserService
+﻿namespace RangerEventManager.WebApi.Services.UserService
 {
     public class UserService : IUserService
     {

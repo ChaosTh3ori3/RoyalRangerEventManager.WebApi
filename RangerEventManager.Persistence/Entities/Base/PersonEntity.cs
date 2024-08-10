@@ -9,5 +9,9 @@
         public string Forname { get; set; }
         public int TroopNumber { get; set; }
         public string TroopName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string PhoneNumer { get; set; }
+        public string MobilePhoneNumer { get; set; }
+        public AddressEntity Address { get; set; }
     }
 }
