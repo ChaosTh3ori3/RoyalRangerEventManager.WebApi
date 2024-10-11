@@ -12,6 +12,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RangerEventManager.Persiste
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AA12F499-9A44-486C-9835-BBB38EF0C57A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangerEventManager.Contracts", "RangerEventManager.Contracts\RangerEventManager.Contracts.csproj", "{245E02A2-A23C-4857-B573-B7A545B8D6E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangerEventManager.TestDataCreator", "RangerEventManager.TestDataCreator\RangerEventManager.TestDataCreator.csproj", "{362D2878-A5E2-4685-931E-2EC1A371DA89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,11 +30,22 @@ Global
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51AE6E7F-974B-4DE2-94A2-1A9BA87AADDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{245E02A2-A23C-4857-B573-B7A545B8D6E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{245E02A2-A23C-4857-B573-B7A545B8D6E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{245E02A2-A23C-4857-B573-B7A545B8D6E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{245E02A2-A23C-4857-B573-B7A545B8D6E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{362D2878-A5E2-4685-931E-2EC1A371DA89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362D2878-A5E2-4685-931E-2EC1A371DA89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362D2878-A5E2-4685-931E-2EC1A371DA89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362D2878-A5E2-4685-931E-2EC1A371DA89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8472AD97-13E2-45BA-BBE9-E9D88B2F9D58}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{362D2878-A5E2-4685-931E-2EC1A371DA89} = {AA12F499-9A44-486C-9835-BBB38EF0C57A}
 	EndGlobalSection
 EndGlobal

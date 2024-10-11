@@ -1,5 +1,4 @@
-﻿using RangerEventManager.WebApi.Controller;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RangerEventManager.WebApi.Authorization
 {
