@@ -46,7 +46,7 @@ jobs:
     - name: Set up .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '7.0.x'
+        dotnet-version: '8.0.x'
 
     - name: Restore dependencies
       run: dotnet restore
@@ -61,16 +61,15 @@ jobs:
           sleep 2
         done
 				
-		- name: Checkout another repository
-			uses: actions/checkout@v3
-			with:
-				repository: other-user/other-repo 
-				ref: main
-				token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout another repository
+      uses: actions/checkout@v3
+      with:
+         repository: ChaosTh3ori3/RangerEventManager.Keycloak 
+	 ref: main
+	 token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Load a file from the other repository
-		- name: Load a specific file
-			run: cat path/to/file/in/other/repo  # Der Pfad zur Datei im anderen Repository
+    - name: Load a specific file
+      run: cat path/to/file/in/other/repo
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
