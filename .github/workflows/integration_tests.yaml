@@ -42,17 +42,6 @@ jobs:
           --health-timeout=5s 
           --health-retries=5
 
-      # Optional: Starte einen Keycloak-Container
-      keycloak:
-        image: quay.io/keycloak/keycloak:23.0.5
-        ports:
-          - 8080:8080
-        env:
-          KEYCLOAK_USER: admin
-          KEYCLOAK_PASSWORD: admin
-          DB_VENDOR: h2
-        options: --health-cmd="curl -f http://localhost:8080/auth" --health-interval=10s --health-timeout=5s --health-retries=5
-
     steps:
     - name: Check out code
       uses: actions/checkout@v2
