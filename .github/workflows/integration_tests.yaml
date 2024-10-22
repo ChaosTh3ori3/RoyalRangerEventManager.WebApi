@@ -78,10 +78,10 @@ jobs:
     - name: Checkout another repository
       uses: actions/checkout@v3
       with:
-         repository: ChaosTh3ori3/RangerEventManager.Keycloak 
-	 ref: main
-	 token: ${{ secrets.GITHUB_TOKEN }}
-         path: ./keycloak-repo
+        repository: ChaosTh3ori3/RangerEventManager.Keycloak 
+        ref: main
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: ./keycloak-repo
 
     - name: Build the Docker image
       run: |
@@ -89,7 +89,7 @@ jobs:
 
     - name: Run tests using the Docker image
       run: |
-          docker run my-local-docker-image:latest ./run-tests.sh
+          docker run my-local-docker-image:latest
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
