@@ -70,6 +70,9 @@ jobs:
       run: |
           docker run -d --name my_test_container my-local-docker-image:latest
 
+    - name: Run ef core database update
+      run: dotnet ef database update
+
     - name: Run Integration Tests
       run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
       env:
