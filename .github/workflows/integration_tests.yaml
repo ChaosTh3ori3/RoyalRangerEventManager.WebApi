@@ -74,7 +74,7 @@ jobs:
           echo "Waiting for Postgres..."
           sleep 2
         done
-				
+
     - name: Checkout another repository
       uses: actions/checkout@v3
       with:
