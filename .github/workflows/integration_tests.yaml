@@ -54,13 +54,6 @@ jobs:
     - name: Build the solution
       run: dotnet build --configuration Release --no-restore
 
-    - name: Wait for Postgres to be ready
-      run: |
-        until docker exec postgres pg_isready -U testuser; do
-          echo "Waiting for Postgres..."
-          sleep 2
-        done
-
     - name: Checkout another repository
       uses: actions/checkout@v3
       with:
