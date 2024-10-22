@@ -68,7 +68,7 @@ jobs:
 
     - name: Run tests using the Docker image
       run: |
-          docker run my-local-docker-image:latest
+          docker run -d --name my_test_container my-local-docker-image:latest
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
