@@ -1,0 +1,99 @@
+name: Run Integration Tests
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    workflow_run:
+    inputs:
+      environment:   # Name des ersten Parameters
+        description: 'Environment to run tests in'
+        required: true
+        default: 'staging'  # Standardwert
+      branch:        # Name des zweiten Parameters
+        description: 'Branch to run the workflow on'
+        required: true
+        default: 'main'
+      run_migrations:
+        description: 'Should the database migrations be run?'
+        required: false
+        default: 'false'
+
+jobs:
+  integration_tests:
+    runs-on: ubuntu-latest
+
+    services:
+      # Starte eine PostgreSQL-Datenbank
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: > 
+          --health-cmd="pg_isready -U testuser" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+
+      # Optional: Starte einen Keycloak-Container
+      keycloak:
+        image: quay.io/keycloak/keycloak:23.0.5
+        ports:
+          - 8080:8080
+        env:
+          KEYCLOAK_USER: admin
+          KEYCLOAK_PASSWORD: admin
+          DB_VENDOR: h2
+        options: --health-cmd="curl -f http://localhost:8080/auth" --health-interval=10s --health-timeout=5s --health-retries=5
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the solution
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Wait for Postgres to be ready
+      run: |
+        until docker exec postgres pg_isready -U testuser; do
+          echo "Waiting for Postgres..."
+          sleep 2
+        done
+				
+    - name: Checkout another repository
+      uses: actions/checkout@v3
+      with:
+         repository: ChaosTh3ori3/RangerEventManager.Keycloak 
+	 ref: main
+	 token: ${{ secrets.GITHUB_TOKEN }}
+         path: ./keycloak-repo
+
+    - name: Build the Docker image
+      run: |
+          docker build -t my-local-docker-image:latest ./keycloak-repo
+
+    - name: Run tests using the Docker image
+      run: |
+          docker run my-local-docker-image:latest ./run-tests.sh
+
+    - name: Run Integration Tests
+      run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
+      env:
+        ASPNETCORE_ENVIRONMENT: IntegrationTest
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=testuser;Password=testpassword;Database=testdb"
+        # Set any other environment variables your application might need for testing
