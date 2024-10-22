@@ -74,7 +74,7 @@ jobs:
       run: dotnet ef database update
 
     - name: Run Integration Tests
-      run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
+      run: dotnet test --filter Category=Integration --no-build --verbosity normal
       env:
         ASPNETCORE_ENVIRONMENT: IntegrationTest
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=testuser;Password=testpassword;Database=testdb"
