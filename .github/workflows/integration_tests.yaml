@@ -30,7 +30,7 @@ jobs:
 
       # Optional: Starte einen Keycloak-Container
       keycloak:
-        image: quay.io/keycloak/keycloak:latest
+        image: quay.io/keycloak/keycloak:23.0.5
         ports:
           - 8080:8080
         env:
@@ -67,9 +67,15 @@ jobs:
          repository: ChaosTh3ori3/RangerEventManager.Keycloak 
 	 ref: main
 	 token: ${{ secrets.GITHUB_TOKEN }}
+         path: ./keycloak-repo
 
-    - name: Load a specific file
-      run: cat path/to/file/in/other/repo
+    - name: Build the Docker image
+      run: |
+          docker build -t my-local-docker-image:latest ./keycloak-repo
+
+    - name: Run tests using the Docker image
+      run: |
+          docker run my-local-docker-image:latest ./run-tests.sh
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=IntegrationTest --no-build --verbosity normal
