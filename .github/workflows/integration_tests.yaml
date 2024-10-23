@@ -68,6 +68,8 @@ jobs:
   
     - name: Run ef core database update
       run: dotnet-ef database update --project RangerEventManager.Persistence/RangerEventManager.Persistence.csproj --startup-project RangerEventManager.WebApi/RangerEventManager.WebApi.csproj --context RangerEventManager.Persistence.EventManagerContext
+      env:
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --no-build --verbosity normal
