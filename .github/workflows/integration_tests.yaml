@@ -66,6 +66,6 @@ jobs:
       run: dotnet test --filter Category=Integration --no-build --verbosity normal
       env:
         ASPNETCORE_ENVIRONMENT: IntegrationTest
-        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=testuser;Password=testpassword;Database=testdb"
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
         # Set any other environment variables your application might need for testing
 
