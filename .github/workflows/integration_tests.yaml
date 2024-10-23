@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-    workflow_run:
+  workflow_run:
     inputs:
       environment:   # Name des ersten Parameters
         description: 'Environment to run tests in'
