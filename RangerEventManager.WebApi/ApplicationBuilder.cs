@@ -1,12 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RangerEventManager.WebApi.Service.UserService;
+using RangerEventManager.WebApi.Services.UserService;
 using Serilog;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RangerEventManager.Persistence;
 using RangerEventManager.Persistence.Settings;
+using RangerEventManager.WebApi.Mapper.UserMapper;
+using RangerEventManager.WebApi.Repositories;
+using RangerEventManager.WebApi.ScheduledTasks;
+using RangerEventManager.WebApi.ScheduledTasks.Base;
+using RangerEventManager.WebApi.Services.IAMService;
 
 namespace RangerEventManager.WebApi;
 
@@ -16,6 +21,7 @@ public static class ApplicationBuilder
     {
         // settings
         var databaseSettings = builder.Configuration.GetSection(nameof(DatabaseSettings));
+        builder.Services.Configure<IAMSettings>(builder.Configuration.GetSection(nameof(IAMSettings)));
 
         // logging
         builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
@@ -46,9 +52,18 @@ public static class ApplicationBuilder
         // database
         builder.Services.AddDbContext<EventManagerContext>(opt => 
             opt.UseNpgsql(databaseSettings["ConnectionString"]));
+
+        builder.Services.AddSingleton<IUserRepository, UserRepository>();
+        
+        // scheduler
+        builder.Services.AddScheduledTask<AddNewIAMUserSchedulerTask>("* * * * *");
+        
+        // mapper
+        builder.Services.AddTransient<IUserMapper, UserMapper>();
         
         // services
         builder.Services.AddTransient<IUserService, UserService>();
+        builder.Services.AddTransient<IIAMService, IAMService>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
