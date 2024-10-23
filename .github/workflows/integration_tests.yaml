@@ -15,7 +15,7 @@ jobs:
     services:
       # Starte eine PostgreSQL-Datenbank
       postgres:
-        image: postgres:13
+        image: postgres:latest
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -23,7 +23,7 @@ jobs:
         ports:
           - 5432:5432
         options: > 
-          --health-cmd="pg_isready -U testuser"
+          --health-cmd="pg_isready -U postgres"
 
     steps:
     - name: Check out code
