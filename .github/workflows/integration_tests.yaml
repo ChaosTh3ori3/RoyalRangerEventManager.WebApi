@@ -47,13 +47,6 @@ jobs:
         ref: main
         token: ${{ secrets.GITHUB_TOKEN }}
         path: ./keycloak-repo
-
-    - name: Wait for Postgres to be ready
-      run: |
-            until docker exec postgres pg_isready -U postgres; do
-               echo "Waiting for Postgres..."
-               sleep 2
-            done
             
     - name: Build the Docker image
       run: |
