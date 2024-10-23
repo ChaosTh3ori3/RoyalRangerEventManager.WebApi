@@ -7,20 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_run:
-    inputs:
-      environment:   # Name des ersten Parameters
-        description: 'Environment to run tests in'
-        required: true
-        default: 'staging'  # Standardwert
-      branch:        # Name des zweiten Parameters
-        description: 'Branch to run the workflow on'
-        required: true
-        default: 'main'
-      run_migrations:
-        description: 'Should the database migrations be run?'
-        required: false
-        default: 'false'
 
 jobs:
   integration_tests:
