@@ -71,7 +71,7 @@ jobs:
 
     - name: Test PostgreSQL connection
       run: |
-        PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5432 -U $POSTGRES_USER -d $POSTGRES_DB -c '\dt'
+        PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5432 -U $POSTGRES_USER $POSTGRES_DB -c '\dt'
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --verbosity normal
