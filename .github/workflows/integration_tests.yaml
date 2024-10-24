@@ -69,6 +69,11 @@ jobs:
         echo "Postgres User: $POSTGRES_USER"
         echo "Postgres Password: $POSTGRES_PASSWORD"
 
+    - name: Test PostgreSQL connection
+      run: |
+        PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -d $POSTGRES_DB -c '\dt'
+
+
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --verbosity normal
       env:
