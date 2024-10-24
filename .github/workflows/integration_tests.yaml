@@ -54,11 +54,11 @@ jobs:
             
     - name: Build the Docker image
       run: |
-          docker build -p 8080:8080 -e KC_HTTP_PORT=8080 -t my-local-docker-image:latest ./keycloak-repo
+          docker build  -t my-local-docker-image:latest ./keycloak-repo
 
     - name: Run tests using the Docker image
       run: |
-          docker run -d --name my_test_container my-local-docker-image:latest
+          docker run -p 8080:8080 -e KC_HTTP_PORT=8080 -d --name my_test_container my-local-docker-image:latest
 
     - name: Install dotnet-ef
       run: dotnet tool install --global dotnet-ef
