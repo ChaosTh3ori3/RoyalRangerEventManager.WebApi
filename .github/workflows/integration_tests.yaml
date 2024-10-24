@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+env:
+  POSTGRES_PASSWORD: "postgres"
+  POSTGRES_DB: "RREM"
+  POSTGRES_USER: "postgres"
 
 jobs:
   integration_tests:
@@ -17,9 +21,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: RREM
+          POSTGRES_USER: ${{env.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{env.POSTGRES_PASSWORD}}
+          POSTGRES_DB: ${{env.POSTGRES_DB}}
         ports:
           - 5432:5432
         options: > 
@@ -63,6 +67,15 @@ jobs:
       #run: dotnet-ef database update --project RangerEventManager.Persistence/RangerEventManager.Persistence.csproj --startup-project RangerEventManager.WebApi/RangerEventManager.WebApi.csproj --context RangerEventManager.Persistence.EventManagerContext
       #env:
         #ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
+
+    - name: Check environment variables
+      run: |
+        echo "Postgres User: $POSTGRES_USER"
+        echo "Postgres Password: $POSTGRES_PASSWORD"
+
+    - name: Test PostgreSQL connection
+      run: |
+        PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5432 -U $POSTGRES_USER $POSTGRES_DB -c '\dt'
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --verbosity normal
