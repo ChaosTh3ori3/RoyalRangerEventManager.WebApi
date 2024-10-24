@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+env:
+  POSTGRES_PASSWORD: "postgres"
+  POSTGRES_DB: "RREM"
+  POSTGRES_USER: "postgres"
 
 jobs:
   integration_tests:
@@ -17,9 +21,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: "postgres"
-          POSTGRES_PASSWORD: "postgres"
-          POSTGRES_DB: RREM
+          POSTGRES_USER: $POSTGRES_USER
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+          POSTGRES_DB: $POSTGRES_DB
         ports:
           - 5432:5432
         options: > 
@@ -72,11 +76,6 @@ jobs:
     - name: Test PostgreSQL connection
       run: |
         PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5432 -U $POSTGRES_USER $POSTGRES_DB -c '\dt'
-      env:
-        POSTGRES_PASSWORD: "postgres"
-        POSTGRES_DB: "RREM"
-        POSTGRES_USER: "postgres"
-        
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --verbosity normal
