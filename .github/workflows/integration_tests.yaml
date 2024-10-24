@@ -83,5 +83,6 @@ jobs:
         ASPNETCORE_ENVIRONMENT: IntegrationTest
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
         KeyCloak_Host_DefaultConnection: "http://localhost:8080"
+        KeyCloak_Client_Secret: ${{ secrets.KEYCLOAK_CLIENTSECRET }}
         # Set any other environment variables your application might need for testing
 
