@@ -1,4 +1,4 @@
-﻿namespace RangerEventManager.WebApi.Settings;
+﻿namespace RangerEventManager.Persistence.Settings;
 
  public record class JwtSettings(
     string Issuer,

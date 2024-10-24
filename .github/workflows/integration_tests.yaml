@@ -1,0 +1,73 @@
+name: Run Integration Tests
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  integration_tests:
+    runs-on: ubuntu-latest
+
+    services:
+      # Starte eine PostgreSQL-Datenbank
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: RREM
+        ports:
+          - 5432:5432
+        options: > 
+          --health-cmd="pg_isready -U postgres"
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the solution
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Checkout another repository
+      uses: actions/checkout@v3
+      with:
+        repository: ChaosTh3ori3/RangerEventManager.Keycloak 
+        ref: main
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: ./keycloak-repo
+            
+    - name: Build the Docker image
+      run: |
+          docker build -t my-local-docker-image:latest ./keycloak-repo
+
+    - name: Run tests using the Docker image
+      run: |
+          docker run -d --name my_test_container my-local-docker-image:latest
+
+    - name: Install dotnet-ef
+      run: dotnet tool install --global dotnet-ef
+  
+    #- name: Run ef core database update
+      #run: dotnet-ef database update --project RangerEventManager.Persistence/RangerEventManager.Persistence.csproj --startup-project RangerEventManager.WebApi/RangerEventManager.WebApi.csproj --context RangerEventManager.Persistence.EventManagerContext
+      #env:
+        #ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
+
+    - name: Run Integration Tests
+      run: dotnet test --filter Category=Integration --no-build --verbosity normal
+      env:
+        ASPNETCORE_ENVIRONMENT: IntegrationTest
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
+        # Set any other environment variables your application might need for testing
+
