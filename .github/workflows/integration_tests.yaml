@@ -62,7 +62,7 @@ jobs:
 
     - name: Check if Keycloak is online
       run: |
-        until curl -sSf -o /dev/null http://localhost:8080/auth; do
+        until curl -sSf -o /dev/null http://localhost:8080; do
           echo "Waiting for Keycloak..."
           sleep 5
         done
