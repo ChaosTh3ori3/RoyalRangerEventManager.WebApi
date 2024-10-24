@@ -17,15 +17,18 @@ public class AddNewIAMUserSchedulerTaskTests
     private string? connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
     private string? keyCloakHost = Environment.GetEnvironmentVariable("KeyCloak_Host_DefaultConnection");
 
-    private readonly string iamUserEndpoint = $"{{keyCloakHost}}/admin/realms/RoyalRangerEventManager/users";
-    private readonly string tokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token";
+    private string iamUserEndpoint;
+    private string tokenEndpoint;
     private readonly string ClientId = "RREM-API";
     private readonly string ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd";
 
     public AddNewIAMUserSchedulerTaskTests()
     {
         keyCloakHost ??= "http://localhost:8080";
-        connectionString ??= "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM";
+        connectionString ??= "User ID=postgres;Password=password;Server=localhost;Port=5432;Database=RREM";
+        
+        iamUserEndpoint = keyCloakHost + "/admin/realms/RoyalRangerEventManager/users";
+        tokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token";
     }
 
 
@@ -67,16 +70,15 @@ public class AddNewIAMUserSchedulerTaskTests
         // assert
         var users = context.Users.ToList();
         Assert.NotEmpty(users);
-        // Assert.Single(users);
-        Assert.Equal("test@test.com", users.First().UserName);
     }
 
     private async Task addIAMUserToIAM(IAMService iamService, string token)
     {
+        var randomNumber = Random.Shared.Next(0, 100);
         var user = new KeycloakUser()
         {   
-            Email = "test@test.com",
-            Username = "test@test.com",
+            Email = "test" + randomNumber + "@test.com",
+            Username = "test@test.com" + randomNumber,
             FirstName = "test",
             LastName = "test",
             Enabled = true

@@ -22,8 +22,8 @@ public class IAMServiceTests
         var options = Options.Create(new IAMSettings()
         {
             ClientId = "RREM-API",
-            ClientSecret = "hOyMXQuM5qQJ2ugT1xWd7zz88rqbyb8H",
-            TokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token"
+            ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd",
+            TokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token"
         });
         
         var service = new IAMService(options);
@@ -43,9 +43,9 @@ public class IAMServiceTests
         var options = Options.Create(new IAMSettings()
         {
             ClientId = "RREM-API",
-            ClientSecret = "hOyMXQuM5qQJ2ugT1xWd7zz88rqbyb8H",
-            TokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token",
-            UsersEndpoint = $"{{keyCloakHost}}/admin/realms/RoyalRangerEventManager/users"
+            ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd",
+            TokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token",
+            UsersEndpoint = keyCloakHost + "/admin/realms/RoyalRangerEventManager/users"
         });
         
         var service = new IAMService(options);
@@ -74,9 +74,9 @@ public class IAMServiceTests
         var options = Options.Create(new IAMSettings()
         {
             ClientId = "RREM-API",
-            ClientSecret = "hOyMXQuM5qQJ2ugT1xWd7zz88rqbyb8H",
-            TokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token",
-            UsersEndpoint = $"{{keyCloakHost}}/admin/realms/RoyalRangerEventManager/users"
+            ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd",
+            TokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token",
+            UsersEndpoint = keyCloakHost + "/admin/realms/RoyalRangerEventManager/users"
         });
         
         var service = new IAMService(options);
