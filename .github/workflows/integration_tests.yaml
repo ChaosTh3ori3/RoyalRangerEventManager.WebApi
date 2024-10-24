@@ -54,11 +54,11 @@ jobs:
             
     - name: Build the Docker image
       run: |
-          docker build -t my-local-docker-image:latest ./keycloak-repo
+          docker build  -t my-local-docker-image:latest ./keycloak-repo
 
     - name: Run tests using the Docker image
       run: |
-          docker run -d --name my_test_container my-local-docker-image:latest
+          docker run -p 8080:8080 -e KC_HTTP_PORT=8080 -d --name my_test_container my-local-docker-image:latest
 
     - name: Install dotnet-ef
       run: dotnet tool install --global dotnet-ef
@@ -83,5 +83,6 @@ jobs:
         ASPNETCORE_ENVIRONMENT: IntegrationTest
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
         KeyCloak_Host_DefaultConnection: "http://localhost:8080"
+        KeyCloak_Client_Secret: ${{ secrets.KEYCLOAK_CLIENTSECRET }}
         # Set any other environment variables your application might need for testing
 
