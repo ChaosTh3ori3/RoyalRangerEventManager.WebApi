@@ -8,10 +8,10 @@ on:
     branches:
       - main
 env:
-  POSTGRES_PASSWORD: "postgres"
+  POSTGRES_PASSWORD: "password"
   POSTGRES_DB: "RREM"
   POSTGRES_USER: "postgres"
-  ConnectionStrings__DefaultConnection: "User ID=postgres;Password=postgres;Server=localhost;Port=5432;Database=RREM"
+  ConnectionStrings__DefaultConnection: "User ID=postgres;Password=password;Server=localhost;Port=5432;Database=RREM"
 
 jobs:
   integration_tests:
