@@ -17,8 +17,8 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: "postgres"
+          POSTGRES_PASSWORD: "postgres"
           POSTGRES_DB: RREM
         ports:
           - 5432:5432
@@ -72,6 +72,11 @@ jobs:
     - name: Test PostgreSQL connection
       run: |
         PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5432 -U $POSTGRES_USER $POSTGRES_DB -c '\dt'
+      env:
+        POSTGRES_PASSWORD: "postgres"
+        POSTGRES_DB: "RREM"
+        POSTGRES_USER: "postgres"
+        
 
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --verbosity normal
