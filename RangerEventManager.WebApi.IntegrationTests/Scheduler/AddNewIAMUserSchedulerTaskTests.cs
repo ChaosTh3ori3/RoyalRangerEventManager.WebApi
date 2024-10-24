@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RangerEventManager.Persistence;
-using RangerEventManager.Persistence.Entities.User;
 using RangerEventManager.Persistence.Settings;
 using RangerEventManager.WebApi.Mapper.UserMapper;
 using RangerEventManager.WebApi.Repositories;
@@ -16,19 +15,25 @@ public class AddNewIAMUserSchedulerTaskTests
 {
 
     private string? connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+    private string? keyCloakHost = Environment.GetEnvironmentVariable("KeyCloak_Host_DefaultConnection");
 
-    private readonly string iamUserEndpoint = "http://localhost:8080/admin/realms/RoyalRangerEventManager/users";
-    private readonly string tokenEndpoint = "http://localhost:8080/realms/RoyalRangerEventManager/protocol/openid-connect/token";
+    private readonly string iamUserEndpoint = $"{{keyCloakHost}}/admin/realms/RoyalRangerEventManager/users";
+    private readonly string tokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token";
     private readonly string ClientId = "RREM-API";
     private readonly string ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd";
+
+    public AddNewIAMUserSchedulerTaskTests()
+    {
+        keyCloakHost ??= "http://localhost:8080";
+        connectionString ??= "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM";
+    }
+
 
     [Fact]
     [Trait("Category", "Integration")]
     public async Task AddNewIAMUser()
     {
         // arrange
-        connectionString ??= "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM";
-        
         var getTokenServiceOptions = Options.Create(new IAMSettings()
         {
             ClientId = ClientId,

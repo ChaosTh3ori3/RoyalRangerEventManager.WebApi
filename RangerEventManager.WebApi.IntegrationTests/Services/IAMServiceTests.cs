@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.Extensions.Options;
 using RangerEventManager.Persistence.Settings;
 using RangerEventManager.WebApi.Services.IAMService;
@@ -7,6 +6,14 @@ namespace RangerEventManager.WebApi.IntegrationTests.Services;
 
 public class IAMServiceTests
 {
+    private string? keyCloakHost = Environment.GetEnvironmentVariable("KeyCloak_Host_DefaultConnection");
+
+    public IAMServiceTests()
+    {
+        keyCloakHost ??= "http://localhost:8080";
+    }
+
+
     [Fact]
     [Trait("Category", "Integration")]
     public async void GetAccessToken()
@@ -16,7 +23,7 @@ public class IAMServiceTests
         {
             ClientId = "RREM-API",
             ClientSecret = "hOyMXQuM5qQJ2ugT1xWd7zz88rqbyb8H",
-            TokenEndpoint = "http://localhost:8081/realms/RoyalRangerEventManager/protocol/openid-connect/token"
+            TokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token"
         });
         
         var service = new IAMService(options);
@@ -37,8 +44,8 @@ public class IAMServiceTests
         {
             ClientId = "RREM-API",
             ClientSecret = "hOyMXQuM5qQJ2ugT1xWd7zz88rqbyb8H",
-            TokenEndpoint = "http://localhost:8081/realms/RoyalRangerEventManager/protocol/openid-connect/token",
-            UsersEndpoint = "http://localhost:8081/admin/realms/RoyalRangerEventManager/users"
+            TokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token",
+            UsersEndpoint = $"{{keyCloakHost}}/admin/realms/RoyalRangerEventManager/users"
         });
         
         var service = new IAMService(options);
@@ -68,8 +75,8 @@ public class IAMServiceTests
         {
             ClientId = "RREM-API",
             ClientSecret = "hOyMXQuM5qQJ2ugT1xWd7zz88rqbyb8H",
-            TokenEndpoint = "http://localhost:8081/realms/RoyalRangerEventManager/protocol/openid-connect/token",
-            UsersEndpoint = "http://localhost:8081/admin/realms/RoyalRangerEventManager/users"
+            TokenEndpoint = $"{{keyCloakHost}}/realms/RoyalRangerEventManager/protocol/openid-connect/token",
+            UsersEndpoint = $"{{keyCloakHost}}/admin/realms/RoyalRangerEventManager/users"
         });
         
         var service = new IAMService(options);
@@ -84,11 +91,6 @@ public class IAMServiceTests
             FirstName = "test",
             LastName = "test",
             Enabled = true
-        };
-        var minimalUser = new
-        {
-            username = "newuser",
-            enabled = true
         };
 
         //act
