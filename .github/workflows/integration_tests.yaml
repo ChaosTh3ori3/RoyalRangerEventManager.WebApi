@@ -64,6 +64,11 @@ jobs:
       #env:
         #ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
 
+    - name: Check environment variables
+      run: |
+        echo "Postgres User: $POSTGRES_USER"
+        echo "Postgres Password: $POSTGRES_PASSWORD"
+
     - name: Run Integration Tests
       run: dotnet test --filter Category=Integration --verbosity normal
       env:
