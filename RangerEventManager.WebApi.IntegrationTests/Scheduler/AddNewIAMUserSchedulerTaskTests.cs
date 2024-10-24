@@ -16,15 +16,16 @@ public class AddNewIAMUserSchedulerTaskTests
 
     private string? connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
     private string? keyCloakHost = Environment.GetEnvironmentVariable("KeyCloak_Host_DefaultConnection");
+    private string? keyCloakClientSecret = Environment.GetEnvironmentVariable("KeyCloak_Client_Secret");
 
     private string iamUserEndpoint;
     private string tokenEndpoint;
     private readonly string ClientId = "RREM-API";
-    private readonly string ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd";
 
     public AddNewIAMUserSchedulerTaskTests()
     {
         keyCloakHost ??= "http://localhost:8080";
+        keyCloakClientSecret ??= "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd";
         connectionString ??= "User ID=postgres;Password=password;Server=localhost;Port=5432;Database=RREM";
         
         iamUserEndpoint = keyCloakHost + "/admin/realms/RoyalRangerEventManager/users";
@@ -40,7 +41,7 @@ public class AddNewIAMUserSchedulerTaskTests
         var getTokenServiceOptions = Options.Create(new IAMSettings()
         {
             ClientId = ClientId,
-            ClientSecret = ClientSecret,
+            ClientSecret = keyCloakClientSecret,
             TokenEndpoint = tokenEndpoint,
             UsersEndpoint = iamUserEndpoint
         });

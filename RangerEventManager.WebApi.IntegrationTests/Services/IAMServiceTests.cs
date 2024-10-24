@@ -7,10 +7,12 @@ namespace RangerEventManager.WebApi.IntegrationTests.Services;
 public class IAMServiceTests
 {
     private string? keyCloakHost = Environment.GetEnvironmentVariable("KeyCloak_Host_DefaultConnection");
+    private string? keyCloakClientSecret = Environment.GetEnvironmentVariable("KeyCloak_Client_Secret");
 
     public IAMServiceTests()
     {
         keyCloakHost ??= "http://localhost:8080";
+        keyCloakClientSecret ??= "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd";
     }
 
 
@@ -22,7 +24,7 @@ public class IAMServiceTests
         var options = Options.Create(new IAMSettings()
         {
             ClientId = "RREM-API",
-            ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd",
+            ClientSecret = keyCloakClientSecret,
             TokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token"
         });
         
@@ -43,7 +45,7 @@ public class IAMServiceTests
         var options = Options.Create(new IAMSettings()
         {
             ClientId = "RREM-API",
-            ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd",
+            ClientSecret = keyCloakClientSecret,
             TokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token",
             UsersEndpoint = keyCloakHost + "/admin/realms/RoyalRangerEventManager/users"
         });
@@ -74,7 +76,7 @@ public class IAMServiceTests
         var options = Options.Create(new IAMSettings()
         {
             ClientId = "RREM-API",
-            ClientSecret = "K2bEJ84APoS8qLmymPkE97rAk9nzy4Qd",
+            ClientSecret = keyCloakClientSecret,
             TokenEndpoint = keyCloakHost + "/realms/RoyalRangerEventManager/protocol/openid-connect/token",
             UsersEndpoint = keyCloakHost + "/admin/realms/RoyalRangerEventManager/users"
         });
