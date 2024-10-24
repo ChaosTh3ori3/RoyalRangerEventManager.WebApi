@@ -11,7 +11,7 @@ env:
   POSTGRES_PASSWORD: "postgres"
   POSTGRES_DB: "RREM"
   POSTGRES_USER: "postgres"
-  ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
+  ConnectionStrings__DefaultConnection: "User ID=postgres;Password=postgres;Server=localhost;Port=5432;Database=RREM"
 
 jobs:
   integration_tests:
