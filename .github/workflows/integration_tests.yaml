@@ -54,7 +54,7 @@ jobs:
             
     - name: Build the Docker image
       run: |
-          docker build -t -p 8080:8080 my-local-docker-image:latest ./keycloak-repo
+          docker build -t my-local-docker-image:latest ./keycloak-repo -p 8080:8080 
 
     - name: Run tests using the Docker image
       run: |
