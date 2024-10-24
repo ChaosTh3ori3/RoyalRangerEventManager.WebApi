@@ -60,6 +60,13 @@ jobs:
       run: |
           docker run -p 8080:8080 -e KC_HTTP_PORT=8080 -d --name my_test_container my-local-docker-image:latest
 
+    - name: Check if Keycloak is online
+      run: |
+        until curl -sSf -o /dev/null http://localhost:8080/auth; do
+          echo "Waiting for Keycloak..."
+          sleep 5
+        done
+
     - name: Install dotnet-ef
       run: dotnet tool install --global dotnet-ef
   
