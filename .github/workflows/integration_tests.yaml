@@ -65,9 +65,10 @@ jobs:
         #ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
 
     - name: Run Integration Tests
-      run: dotnet test --filter Category=Integration --no-build --verbosity normal
+      run: dotnet test --filter Category=Integration --verbosity normal
       env:
         ASPNETCORE_ENVIRONMENT: IntegrationTest
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=RREM"
+        KeyCloak_Host_DefaultConnection: "http://localhost:8080"
         # Set any other environment variables your application might need for testing
 
