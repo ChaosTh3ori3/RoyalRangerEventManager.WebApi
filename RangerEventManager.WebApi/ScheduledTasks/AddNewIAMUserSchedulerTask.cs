@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Threading.Tasks;
 using RangerEventManager.WebApi.Mapper.UserMapper;
 using RangerEventManager.WebApi.Repositories;
 using RangerEventManager.WebApi.ScheduledTasks.Base;

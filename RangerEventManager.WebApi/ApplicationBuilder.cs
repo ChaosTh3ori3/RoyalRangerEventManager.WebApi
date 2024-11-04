@@ -9,6 +9,7 @@ using RangerEventManager.Persistence;
 using RangerEventManager.Persistence.Settings;
 using RangerEventManager.WebApi.Mapper.UserMapper;
 using RangerEventManager.WebApi.Repositories;
+using RangerEventManager.WebApi.Repositories.Camp;
 using RangerEventManager.WebApi.ScheduledTasks;
 using RangerEventManager.WebApi.ScheduledTasks.Base;
 using RangerEventManager.WebApi.Services.IAMService;
@@ -24,7 +25,12 @@ public static class ApplicationBuilder
         builder.Services.Configure<IAMSettings>(builder.Configuration.GetSection(nameof(IAMSettings)));
 
         // logging
-        builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.Console()
+            .CreateLogger();
+        
+        builder.Host.UseSerilog();
 
         // authentication
         var jwtOptions = builder.Configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
@@ -52,11 +58,9 @@ public static class ApplicationBuilder
         // database
         builder.Services.AddDbContext<EventManagerContext>(opt => 
             opt.UseNpgsql(databaseSettings["ConnectionString"]));
-
-        builder.Services.AddSingleton<IUserRepository, UserRepository>();
         
-        // scheduler
-        builder.Services.AddScheduledTask<AddNewIAMUserSchedulerTask>("* * * * *");
+        builder.Services.AddSingleton<IUserRepository, UserRepository>();
+        builder.Services.AddSingleton<ICampRepository, CampRepository>();
         
         // mapper
         builder.Services.AddTransient<IUserMapper, UserMapper>();
@@ -64,6 +68,9 @@ public static class ApplicationBuilder
         // services
         builder.Services.AddTransient<IUserService, UserService>();
         builder.Services.AddTransient<IIAMService, IAMService>();
+        
+        // scheduler
+        builder.Services.AddScheduledTask<AddNewIAMUserSchedulerTask>("* * * * *");
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -80,7 +87,7 @@ public static class ApplicationBuilder
                 BearerFormat = "JWT",
                 Scheme = "bearer"
             });
-
+            
             opt.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -100,8 +107,6 @@ public static class ApplicationBuilder
 
     public static void BuilderWebApplication(this WebApplication app)
     {
-
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             //app.UseExceptionHandler("/Error");
@@ -112,7 +117,7 @@ public static class ApplicationBuilder
                 options.RoutePrefix = string.Empty;
             });
         }
-        
+
         app.UseSerilogRequestLogging();
 
         app.UseRouting();
@@ -121,12 +126,9 @@ public static class ApplicationBuilder
         app.UseAuthorization();
 
         app.UseHttpsRedirection();
-
-        app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-
+        
+        app.MapGet("/", () => "Hello World!");
+        
         app.MapControllers();
 
         app.Run();

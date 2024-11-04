@@ -2,6 +2,6 @@
 {
     public enum PermissionItems
     {
-        CampsRead
+        CampRead
     }
 }

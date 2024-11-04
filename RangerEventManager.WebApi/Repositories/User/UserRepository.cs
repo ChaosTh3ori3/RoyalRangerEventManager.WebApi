@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RangerEventManager.Persistence;
 using RangerEventManager.Persistence.Entities.User;

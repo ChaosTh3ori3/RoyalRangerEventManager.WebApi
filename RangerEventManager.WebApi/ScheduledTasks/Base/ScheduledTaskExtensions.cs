@@ -9,7 +9,7 @@ public static class ScheduledTaskExtensions
         services.AddHostedService(sp =>
         {
             var task = sp.GetRequiredService<IScheduledTask>();
-            return new SchedulerHostedService(new Scheduler(task, cronExpression));
+            return new SchedulerBackgroundService(task, cronExpression);
         });
 
         return services;
