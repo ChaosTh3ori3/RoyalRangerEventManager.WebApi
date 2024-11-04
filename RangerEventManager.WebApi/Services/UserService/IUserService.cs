@@ -4,7 +4,7 @@ namespace RangerEventManager.WebApi.Services.UserService
 {
     public interface IUserService
     {
-        public string GetCurrentUser();
+        public string GetCurrentUserFromHttpContext(HttpContext context);
         public Task<List<UserEntity>> GetAllUsers();
     }
 }

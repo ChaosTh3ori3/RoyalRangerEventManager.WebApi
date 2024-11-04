@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using RangerEventManager.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
